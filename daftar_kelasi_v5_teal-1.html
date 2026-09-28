@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دفتر کلاسی | پایه چهارم</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --teal:#078b83;--teal2:#0b746f;--tealSoft:#dff5f0;
+ --cream:#fbfaf3;--white:#fff;--ink:#172b2b;--muted:#687777;
+ --line:#e2e5df;--red:#d64a4a;--redSoft:#fae1e1;
+ --green:#42a56d;--greenSoft:#e0f2e7;--yellow:#c98c2f;--yellowSoft:#faedd5;
+ --blue:#4d86b8;--blueSoft:#e1edf7;
+}
+html{font-size:16px}
+body{
+ margin:0;background:var(--cream);color:var(--ink);
+ font-family:Tahoma,"Vazirmatn",Arial,sans-serif;font-size:16px;line-height:1.7;
+ padding-bottom:82px
+}
+header{
+ background:var(--white);color:var(--ink);padding:18px 18px 16px;
+ position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);
+ box-shadow:0 2px 12px #00000008
+}
+header .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h1{margin:0;font-size:24px;font-weight:900}
+header p{margin:2px 0 0;color:var(--muted);font-size:14px}
+.date-pill{
+ background:transparent;border:0;color:var(--muted);padding:0;font-size:12px;
+ white-space:nowrap
+}
+nav{
+ position:fixed;bottom:0;left:0;right:0;top:auto;height:76px;
+ display:flex;justify-content:space-around;gap:0;padding:7px 5px 6px;
+ background:#fff;border-top:1px solid #dfe3dd;z-index:50;
+ box-shadow:0 -5px 20px #0000000c
+}
+nav button{
+ flex:1;border:0;background:transparent;color:#718080;border-radius:14px;
+ padding:4px 2px;font:inherit;font-size:10px;font-weight:700;display:flex;
+ flex-direction:column;align-items:center;justify-content:center;gap:1px
+}
+nav button:before{font-size:24px;line-height:1.1}
+nav button[data-tab="home"]:before{content:"⌂"}
+nav button[data-tab="attendance"]:before{content:"▣"}
+nav button[data-tab="students"]:before{content:"♧"}
+nav button[data-tab="schedule"]:before{content:"▦"}
+nav button[data-tab="progress"]:before{content:"▥"}
+nav button.active{color:var(--teal);background:transparent}
+main{max-width:760px;margin:auto;padding:14px 15px 20px}
+section{display:none}.show{display:block}
+.card{
+ background:var(--white);border:1px solid #e1e4df;border-radius:28px;
+ padding:18px;margin-bottom:14px;box-shadow:0 5px 18px #1720330b
+}
+.hero{
+ background:var(--teal);color:#fff;border:0;border-radius:34px;
+ padding:22px 22px 24px;box-shadow:0 12px 26px #078b8328
+}
+.hero h2{font-size:21px;margin:0 0 6px}.hero .muted{color:#e7fffb}
+h2{font-size:20px;margin:0 0 10px;font-weight:900}
+.muted{color:var(--muted);font-size:14px;line-height:1.9}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:17px}
+.stat{
+ padding:17px;border-radius:26px;background:#fff;color:var(--ink);
+ border:1px solid #e2e5df;box-shadow:0 5px 16px #00000008
+}
+.stat b{font-size:27px;display:block;color:var(--ink)}.stat span{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:13px;color:#4e5d5d;display:block;margin-bottom:6px;font-weight:800}
+input,select,textarea{
+ width:100%;border:1px solid #d9ded8;border-radius:15px;padding:12px 13px;
+ font:inherit;font-size:15px;background:#fff;color:var(--ink);outline:none
+}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 4px #078b8314}
+textarea{min-height:95px;resize:vertical}
+button.primary,button.secondary,button.danger{
+ border-radius:15px;padding:11px 16px;font:inherit;font-size:14px;font-weight:800;cursor:pointer
+}
+button.primary{background:var(--teal);color:#fff;border:0}
+button.secondary{background:#eef3f1;color:var(--ink);border:1px solid #e0e6e2}
+button.danger{background:var(--redSoft);color:#a93636;border:0}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.badge{font-size:10px;padding:5px 9px;border-radius:999px;background:var(--tealSoft);color:var(--teal2);font-weight:800}
+.kpi{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.kpi span{background:#f2f4f0;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.table{overflow:auto}.schedule{min-width:680px;display:grid;grid-template-columns:120px repeat(3,1fr);border:1px solid #dfe4df;border-radius:17px;overflow:hidden}
+.cell{padding:11px;border-left:1px solid #e4e7e3;border-bottom:1px solid #e4e7e3;background:#fff}.head{background:var(--tealSoft);font-weight:900;color:var(--teal2)}.day{font-weight:900;background:#f7f8f4}
+.student{padding:14px 0;border-bottom:1px solid #edf0ec}.student:last-child{border-bottom:0}
+.student-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.student-name{font-weight:900;font-size:15px}
+.att-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.att-grid button{
+ border:1px solid #dfe4df;background:#fff;border-radius:13px;padding:9px 3px;font-size:12px;font-weight:800
+}
+.att-grid button.sel-present{background:var(--greenSoft);border-color:#9ad2b2;color:#287d4e}
+.att-grid button.sel-absent{background:var(--redSoft);border-color:#efaaaa;color:#ad3636}
+.att-grid button.sel-late{background:var(--yellowSoft);border-color:#e9c47c;color:#9a691e}
+.att-grid button.sel-excused{background:var(--blueSoft);border-color:#a7c9e5;color:#356c99}
+.homework-box{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.homework-box button{
+ border:1px solid #dfe4df;background:#fff;border-radius:13px;padding:9px;font-size:12px;font-weight:800
+}
+.homework-box button.sel-done{background:var(--greenSoft);border-color:#9ad2b2;color:#287d4e}
+.homework-box button.sel-not{background:var(--redSoft);border-color:#efaaaa;color:#ad3636}
+.homework-box button.sel-partial{background:var(--yellowSoft);border-color:#e9c47c;color:#9a691e}
+.note-mini{margin-top:8px}.note-mini input{font-size:13px;padding:9px}
+.progress-item{border:1px solid #e2e6e1;border-radius:18px;padding:14px;margin-top:10px;background:#fff}
+.empty{text-align:center;padding:32px;color:#667474;font-size:14px}
+.toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%) translateY(100px);background:#18302f;color:#fff;padding:12px 17px;border-radius:14px;font-size:13px;font-weight:700;opacity:0;transition:.25s;z-index:100;box-shadow:0 10px 25px #0003}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(min-width:650px){
+ body{padding-bottom:0}nav{position:sticky;top:0;height:auto;bottom:auto;justify-content:center;border-top:0;border-bottom:1px solid var(--line)}
+ nav button{flex:0 1 120px;flex-direction:row;gap:6px;font-size:12px}nav button:before{font-size:20px}
+ .stats{grid-template-columns:repeat(4,1fr)}.grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:480px){header h1{font-size:23px}.row{grid-template-columns:1fr}main{padding:13px}.card{padding:16px;border-radius:25px}.hero{border-radius:31px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><h1>📚 دفتر کلاسی</h1><p>دفتر دیجیتال معلم • پایه چهارم</p></div><div class="date-pill" id="todayLabel"></div></div></header>
+<nav id="nav">
+<button class="active" data-tab="home">🏠 خانه</button>
+<button data-tab="attendance">✅ حضور و تکلیف</button>
+<button data-tab="students">👨‍🎓 دانش‌آموزان</button>
+<button data-tab="schedule">🗓️ برنامه کلاسی</button>
+<button data-tab="progress">📈 پیشرفت تدریس</button>
+</nav>
+<main>
+<section id="home" class="show">
+<div class="card hero"><h2>سلام معلم 👋</h2><p class="muted">✨ مدیریت حرفه‌ای کلاس در یک دفتر دیجیتال؛ حضور و غیاب، تحویل تکلیف، برنامه هفتگی و پیشرفت تدریس.</p>
+<div class="stats"><div class="stat"><b id="countStudents">۱۶</b><span>دانش‌آموز</span></div><div class="stat"><b>۵</b><span>درس</span></div><div class="stat"><b>۱۵</b><span>زنگ هفتگی</span></div><div class="stat"><b id="todayRecords">۰</b><span>ثبت امروز</span></div></div></div>
+<div class="card">
+<h2>دسترسی سریع</h2>
+<div style="display:grid;gap:10px">
+<button class="secondary" style="text-align:right;padding:17px 18px;border-radius:24px;font-size:16px" onclick="go('attendance')">🗒️ <b>ثبت سریع روز کلاس</b><br><small style="color:#788">حضور، تکلیف و یادداشت</small></button>
+<button class="secondary" style="text-align:right;padding:17px 18px;border-radius:24px;font-size:16px" onclick="go('schedule')">🗓️ <b>برنامه کلاسی</b><br><small style="color:#788">برنامه هفتگی و سه زنگ</small></button>
+<button class="secondary" style="text-align:right;padding:17px 18px;border-radius:24px;font-size:16px" onclick="go('progress')">📚 <b>پیشرفت تدریس</b><br><small style="color:#788">ثبت درس و تکلیف</small></button>
+</div></div>
+</section>
+
+<section id="attendance">
+<div class="card"><h2>حضور و غیاب + تحویل تکلیف</h2><p class="muted">برای هر دانش‌آموز وضعیت حضور و تحویل تکلیف را برای تاریخ انتخاب‌شده ثبت کن.</p>
+<div class="row"><div><label>تاریخ شمسی</label><input id="aDate" placeholder="مثلاً ۱۴۰۵/۰۷/۰۶"></div><div><label>جستجوی دانش‌آموز</label><input id="aSearch" placeholder="نام دانش‌آموز..."></div></div>
+<div class="kpi"><span id="presentKpi">حاضر: ۰</span><span id="absentKpi">غایب: ۰</span><span id="lateKpi">تأخیر: ۰</span><span id="homeworkKpi">تحویل: ۰</span></div>
+<div id="attendanceList"></div>
+<div class="actions"><button class="primary" onclick="saveAttendance()">💾 ذخیره حضور و تکلیف</button><button class="secondary" onclick="clearAttendance()">پاک کردن ثبت امروز</button></div></div>
+<div class="card"><h2>یادداشت عمومی کلاس</h2><textarea id="dailyNote" placeholder="نکته یا اتفاق مهم امروز..."></textarea><div class="actions"><button class="primary" onclick="saveDailyNote()">ذخیره یادداشت</button></div></div>
+</section>
+
+<section id="students"><div class="card"><h2>دانش‌آموزان</h2><p class="muted">نام‌ها قابل ویرایش هستند.</p><input id="studentSearch" placeholder="جستجوی نام..."><div id="studentList"></div><div class="actions"><button class="primary" onclick="addStudent()">➕ افزودن دانش‌آموز</button></div></div></section>
+
+<section id="schedule"><div class="card"><h2>برنامه کلاسی</h2><p class="muted">فقط شنبه تا چهارشنبه و دقیقاً سه زنگ در هر روز.</p><div class="table"><div id="scheduleGrid" class="schedule"></div></div><div class="actions"><button class="primary" onclick="saveSchedule()">💾 ذخیره برنامه</button><button class="secondary" onclick="resetSchedule()">بازنشانی</button></div></div></section>
+
+<section id="progress">
+<div class="card"><h2>📈 ثبت پیشرفت تدریس</h2>
+<div class="row"><div><label>تاریخ شمسی</label><input id="pDate" placeholder="مثلاً ۱۴۰۵/۰۷/۰۶"></div><div><label>درس</label><select id="pSubject"></select></div></div>
+<div style="margin-top:10px"><label>تا کدام صفحه / درس / مبحث پیش رفت؟</label><input id="pPage"></div>
+<div style="margin-top:10px"><label>موضوع تدریس‌شده</label><input id="pTopic"></div>
+<div style="margin-top:10px"><label>فعالیت‌های انجام‌شده در کلاس</label><textarea id="pActivity"></textarea></div>
+<div style="margin-top:10px"><label>تکلیف داده‌شده</label><textarea id="pHomework"></textarea></div>
+<div style="margin-top:10px"><label>یادداشت معلم</label><textarea id="pNote"></textarea></div>
+<div class="actions"><button class="primary" onclick="addProgress()">➕ ثبت پیشرفت امروز</button></div></div>
+<div class="card"><h2>سوابق پیشرفت</h2><div class="row"><input id="filterText" placeholder="جستجو..."><select id="filterSubject"></select></div><div id="progressList"></div></div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+<script>
+const subjects=['ریاضی','فارسی','علوم','مطالعات اجتماعی','هدیه‌های آسمانی'];
+let students=JSON.parse(localStorage.getItem('studentsV2')||'null')||['سهما دریایی صلعی','فریجا زارع','کوثر سهیلی‌زاده','مریم گندمی','منا ملاحي','سما نجانی‌زاده','مونا یوسفی','نسیم آتش‌روز','هدا آسوده','نهال ارزنگ','مریم برخاسته','رهاب جاسمی','سدنیا جاشوئی','عذرا جاشوئی خمیری','مطهره خوش‌دل','فاطمه دربخش'];
+const days=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه'];
+let schedule=JSON.parse(localStorage.getItem('classScheduleV2')||'null')||Object.fromEntries(days.map(d=>[d,['','','']]));
+let attendance=JSON.parse(localStorage.getItem('attendanceV2')||'{}');
+let progress=JSON.parse(localStorage.getItem('classProgressV2')||'[]');
+let notes=JSON.parse(localStorage.getItem('dailyNotesV2')||'{}');
+let currentDate='';
+
+function faNum(s){return String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d])}
+function jalaliDate(date=new Date()){
+  let gy=date.getFullYear(),gm=date.getMonth()+1,gd=date.getDate();
+  let gdm=[0,31,28,31,30,31,30,31,31,30,31,30,31];
+  let gy2=gy+1;
+  let days=355666+365*gy+Math.floor(gy2/4)-Math.floor(gy2/100)+Math.floor(gy2/400)+gd;
+  for(let i=0;i<gm;i++) days+=gdm[i];
+  if(gm>2 && ((gy%4===0&&gy%100!==0)||(gy%400===0))) days++;
+  let jy=-1595+33*Math.floor(days/12053);
+  days%=12053;
+  jy+=4*Math.floor(days/1461);
+  days%=1461;
+  if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365}
+  let jm=days<186?1+Math.floor(days/31):7+Math.floor((days-186)/30);
+  let jd=1+(days<186?days%31:(days-186)%30);
+  return `${jy}/${String(jm).padStart(2,'0')}/${String(jd).padStart(2,'0')}`;
+}
+function todayText(){return jalaliDate(new Date())}
+function normalizeJalali(v){return String(v||'').replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d)).replace(/[^0-9/]/g,'')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1700)}
+function go(tab){document.querySelector(`nav button[data-tab="${tab}"]`)?.click()}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));document.getElementById(b.dataset.tab).classList.add('show');if(b.dataset.tab==='attendance')renderAttendance()});
+
+function getA(){currentDate=document.getElementById('aDate').value.trim()||todayText();if(!attendance[currentDate])attendance[currentDate]={};return attendance[currentDate]}
+function renderAttendance(){
+currentDate=document.getElementById('aDate').value.trim()||todayText();document.getElementById('aDate').value=currentDate;
+let data=getA(),q=document.getElementById('aSearch').value.trim();
+let arr=students.map((name,i)=>({name,i,...(data[i]||{})})).filter(x=>x.name.includes(q));
+document.getElementById('attendanceList').innerHTML=arr.map(x=>{
+let at=x.status||'',hw=x.homework||'';
+return `<div class="student"><div class="student-top"><span class="student-name">${esc(x.name)}</span><span class="badge">پایه چهارم</span></div>
+<div class="att-grid">
+<button class="${at==='حاضر'?'sel-present':''}" onclick="setAtt(${x.i},'حاضر')">حاضر</button>
+<button class="${at==='غایب'?'sel-absent':''}" onclick="setAtt(${x.i},'غایب')">غایب</button>
+<button class="${at==='تأخیر'?'sel-late':''}" onclick="setAtt(${x.i},'تأخیر')">تأخیر</button>
+<button class="${at==='موجه'?'sel-excused':''}" onclick="setAtt(${x.i},'موجه')">موجه</button></div>
+<div class="homework-box"><button class="${hw==='تحویل داده'?'sel-done':''}" onclick="setHW(${x.i},'تحویل داده')">📚 تحویل داده</button><button class="${hw==='تحویل نداده'?'sel-not':''}" onclick="setHW(${x.i},'تحویل نداده')">❌ تحویل نداده</button><button class="${hw==='ناقص'?'sel-partial':''}" onclick="setHW(${x.i},'ناقص')">⚠️ ناقص</button><button class="${hw==='نداشته'?'sel-done':''}" onclick="setHW(${x.i},'نداشته')">— تکلیف نداشته</button></div>
+<div class="note-mini"><input id="an${x.i}" value="${esc(x.note||'')}" placeholder="یادداشت کوتاه برای این دانش‌آموز..."></div></div>`}).join('')||'<div class="empty">دانش‌آموزی پیدا نشد.</div>';
+updateKpi();
+document.getElementById('dailyNote').value=notes[currentDate]||''
+}
+function setAtt(i,v){let d=getA();d[i]=d[i]||{};d[i].status=v;renderAttendance()}
+function setHW(i,v){let d=getA();d[i]=d[i]||{};d[i].homework=v;renderAttendance()}
+function saveAttendance(){let d=getA();students.forEach((_,i)=>{let n=document.getElementById('an'+i);if(n){d[i]=d[i]||{};d[i].note=n.value}});attendance[currentDate]=d;localStorage.setItem('attendanceV2',JSON.stringify(attendance));toast('حضور و تکلیف ذخیره شد ✅');updateKpi();updateHome()}
+function clearAttendance(){if(!confirm('ثبت حضور و تکلیف این تاریخ پاک شود؟'))return;delete attendance[currentDate];localStorage.setItem('attendanceV2',JSON.stringify(attendance));renderAttendance();toast('ثبت پاک شد')}
+function updateKpi(){let d=attendance[currentDate]||{},v=Object.values(d);document.getElementById('presentKpi').textContent='حاضر: '+v.filter(x=>x.status==='حاضر').length;document.getElementById('absentKpi').textContent='غایب: '+v.filter(x=>x.status==='غایب').length;document.getElementById('lateKpi').textContent='تأخیر: '+v.filter(x=>x.status==='تأخیر').length;document.getElementById('homeworkKpi').textContent='تحویل: '+v.filter(x=>x.homework==='تحویل داده').length}
+function saveDailyNote(){currentDate=document.getElementById('aDate').value.trim()||todayText();notes[currentDate]=document.getElementById('dailyNote').value;localStorage.setItem('dailyNotesV2',JSON.stringify(notes));toast('یادداشت ذخیره شد 📝')}
+
+function renderStudents(q=''){document.getElementById('studentList').innerHTML=students.map((x,i)=>({x,i})).filter(o=>o.x.includes(q)).map(o=>`<div class="student student-top"><span class="student-name">${esc(o.x)}</span><button class="secondary" onclick="editStudent(${o.i})">ویرایش</button></div>`).join('')||'<div class="empty">دانش‌آموزی پیدا نشد.</div>'}
+function editStudent(i){let n=prompt('نام جدید دانش‌آموز:',students[i]);if(n&&n.trim()){students[i]=n.trim();localStorage.setItem('studentsV2',JSON.stringify(students));renderStudents(document.getElementById('studentSearch').value);document.getElementById('countStudents').textContent=faNum(students.length);renderAttendance();toast('نام ویرایش شد')}}
+function addStudent(){let n=prompt('نام دانش‌آموز جدید:');if(n&&n.trim()){students.push(n.trim());localStorage.setItem('studentsV2',JSON.stringify(students));renderStudents();document.getElementById('countStudents').textContent=faNum(students.length);toast('دانش‌آموز اضافه شد')}}
+document.getElementById('studentSearch').oninput=e=>renderStudents(e.target.value);document.getElementById('aSearch').oninput=renderAttendance;
+document.getElementById('aDate').oninput=()=>{document.getElementById('aDate').value=normalizeJalali(document.getElementById('aDate').value);renderAttendance()};
+
+function renderSchedule(){let g=document.getElementById('scheduleGrid');g.innerHTML='<div class="cell head">روز</div><div class="cell head">زنگ ۱</div><div class="cell head">زنگ ۲</div><div class="cell head">زنگ ۳</div>';days.forEach(d=>{g.innerHTML+=`<div class="cell day">${d}</div>`+schedule[d].map((v,i)=>`<div class="cell"><select data-day="${d}" data-i="${i}"><option value="">انتخاب درس</option>${subjects.map(s=>`<option value="${esc(s)}" ${s===v?'selected':''}>${s}</option>`).join('')}</select></div>`).join('')})}
+function saveSchedule(){document.querySelectorAll('#scheduleGrid select').forEach(s=>schedule[s.dataset.day][s.dataset.i]=s.value);localStorage.setItem('classScheduleV2',JSON.stringify(schedule));toast('برنامه ذخیره شد ✅')}
+function resetSchedule(){schedule=Object.fromEntries(days.map(d=>[d,['','','']]));renderSchedule();saveSchedule()}
+
+function fillSubjects(){document.getElementById('pSubject').innerHTML=subjects.map(s=>`<option>${s}</option>`).join('');document.getElementById('filterSubject').innerHTML='<option value="">همه درس‌ها</option>'+subjects.map(s=>`<option>${s}</option>`).join('')}
+function addProgress(){let date=pDate.value.trim()||todayText();let x={id:Date.now(),date,subject:pSubject.value,page:pPage.value.trim(),topic:pTopic.value.trim(),activity:pActivity.value.trim(),homework:pHomework.value.trim(),note:pNote.value.trim()};if(!x.topic){alert('موضوع تدریس را وارد کن.');return}progress.unshift(x);localStorage.setItem('classProgressV2',JSON.stringify(progress));['pPage','pTopic','pActivity','pHomework','pNote'].forEach(id=>document.getElementById(id).value='');pDate.value=date;renderProgress();toast('پیشرفت ثبت شد ✅');updateHome()}
+function renderProgress(){let q=document.getElementById('filterText').value.trim(),f=document.getElementById('filterSubject').value;let a=progress.filter(x=>(!f||x.subject===f)&&(!q||Object.values(x).join(' ').includes(q)));document.getElementById('progressList').innerHTML=a.length?a.map(x=>`<div class="progress-item"><b>${esc(x.subject)}</b> • ${esc(x.date)}<br><small>پیشرفت: ${esc(x.page||'—')}</small><p>${esc(x.topic)}</p>${x.activity?`<small>فعالیت: ${esc(x.activity)}</small><br>`:''}${x.homework?`<small>تکلیف: ${esc(x.homework)}</small><br>`:''}${x.note?`<small>یادداشت: ${esc(x.note)}</small>`:''}<div class="actions"><button class="danger" onclick="delProgress(${x.id})">حذف</button></div></div>`).join(''):'<div class="empty">هنوز سابقه‌ای ثبت نشده.</div>'}
+function delProgress(id){progress=progress.filter(x=>x.id!==id);localStorage.setItem('classProgressV2',JSON.stringify(progress));renderProgress();updateHome()}
+document.getElementById('filterText').oninput=renderProgress;
+document.getElementById('filterSubject').onchange=renderProgress;
+document.getElementById('pDate').oninput=()=>document.getElementById('pDate').value=normalizeJalali(document.getElementById('pDate').value);
+
+function updateHome(){let d=attendance[todayText()]||{};document.getElementById('todayRecords').textContent=faNum(Object.values(d).filter(x=>x.status||x.homework).length)}
+function init(){currentDate=todayText();document.getElementById('todayLabel').textContent='امروز '+currentDate;document.getElementById('aDate').value=currentDate;document.getElementById('pDate').value=currentDate;document.getElementById('countStudents').textContent=faNum(students.length);renderStudents();renderSchedule();fillSubjects();renderProgress();renderAttendance();updateHome()}
+init();
+</script>
+</body>
+</html>
