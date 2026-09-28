@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دفتر کلاسی</title>
+<meta name="theme-color" content="#172033">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دفتر کلاسی">
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#edf6ff 0%,#faf7ef 48%,#eefaf6 100%);color:#172033;font-family:Tahoma,Arial,sans-serif;font-size:16px}
+body:after{content:"📚   ✏️   📖   🖊️";position:fixed;inset:auto 0 0 0;height:150px;display:flex;align-items:center;justify-content:center;gap:34px;font-size:42px;opacity:.035;pointer-events:none;z-index:-1}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 15%,#ffffffaa 0 12%,transparent 28%),radial-gradient(circle at 90% 80%,#bdeee855 0 10%,transparent 30%);z-index:-1}
+header{background:linear-gradient(135deg,#101a32,#1d3560 55%,#245a70);color:#fff;padding:22px 16px 16px;position:sticky;top:0;z-index:5;box-shadow:0 8px 25px #10204422}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:900px;margin:auto}
+.desk-icon{font-size:38px;filter:drop-shadow(0 5px 8px #0005)}
+.today-banner{max-width:900px;margin:14px auto 0;background:#ffffff1c;border:1px solid #ffffff30;border-radius:18px;padding:11px 14px;text-align:center;font-size:20px;font-weight:800;letter-spacing:.2px}
+header h1{margin:0;font-size:30px;font-weight:900;letter-spacing:-.5px} header p{margin:7px 0 0;opacity:.82;font-size:15px}
+nav{display:flex;gap:7px;overflow:auto;padding:10px;background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:76px;z-index:4}
+nav button{white-space:nowrap;border:1px solid #d9deea;background:#ffffffdd;border-radius:16px;padding:10px 15px;font-size:13px;box-shadow:0 3px 10px #17365d0b}
+nav button.active{background:#172033;color:#fff;border-color:#172033}
+main{max-width:900px;margin:auto;padding:14px}
+section{display:none}.show{display:block}
+.card{background:#ffffffdd;border:1px solid #ffffff;border-radius:22px;padding:15px;margin-bottom:12px;box-shadow:0 8px 30px #17365d12;backdrop-filter:blur(10px)}
+h2{font-size:24px;margin:0 0 14px;font-weight:900}.muted{color:#667085;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:650px){.grid{grid-template-columns:repeat(3,1fr)}}
+label{font-size:12px;color:#667085;display:block;margin-bottom:5px}input,select,textarea{width:100%;border:1px solid #d8ddea;border-radius:13px;padding:12px 13px;font:inherit;font-size:16px;background:#fff}textarea{min-height:90px;resize:vertical}
+button.primary{background:#172033;color:white;border:0;border-radius:10px;padding:10px 14px;font:inherit;cursor:pointer}
+button.secondary{background:#eef1f6;color:#172033;border:0;border-radius:10px;padding:10px 14px;font:inherit}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.table{overflow:auto}.schedule{min-width:620px;display:grid;grid-template-columns:120px repeat(3,1fr);border:1px solid #e1e5ed;border-radius:12px;overflow:hidden}
+.cell{padding:10px;border-left:1px solid #e1e5ed;border-bottom:1px solid #e1e5ed;background:#fff}.head{background:#f0f3f8;font-weight:bold}.day{font-weight:bold;background:#f8f9fc}
+.student{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #edf0f5}.student:last-child{border-bottom:0}
+.badge{font-size:11px;padding:4px 8px;border-radius:999px;background:#eef1f6}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.progress-item{border:1px solid #e2e6ee;border-radius:12px;padding:12px;margin-top:10px}
+
+.quran-ayah{background:#fff;border:1px solid #e3e9ef;border-radius:20px;padding:18px;margin:10px 0;box-shadow:0 6px 20px #17365d0b}
+.quran-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+.quran-number{display:inline-flex;width:34px;height:34px;border-radius:50%;align-items:center;justify-content:center;background:#e7f5ef;color:#16745f;font-weight:bold}
+.quran-arabic{font-family:serif;font-size:25px;line-height:2.2;text-align:right;direction:rtl}
+.quran-loading{text-align:center;padding:30px;color:#667085}
+.quran-error{background:#fff1f1;color:#a32626;border:1px solid #f2caca;border-radius:16px;padding:14px}
+.student-toolbar{display:flex;gap:10px;align-items:center;margin:12px 0;flex-wrap:wrap}
+.student-toolbar input{flex:1;min-width:180px}
+.add-student{background:linear-gradient(135deg,#20b486,#159a78)!important;color:#fff!important;border:0!important;border-radius:14px!important;padding:11px 16px!important;font-weight:bold;cursor:pointer}
+.student-manage-card{background:#fff;border:1px solid #e2e9f4;border-radius:18px;padding:13px;margin-top:9px;box-shadow:0 5px 18px #17365d0d}
+.student-manage-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.student-actions{display:flex;gap:7px}
+.icon-edit,.icon-delete{border:0;border-radius:12px;padding:8px 11px;cursor:pointer;font:inherit}
+.icon-edit{background:#eaf2ff;color:#1769d1}.icon-delete{background:#fff0f0;color:#c62828}
+.student-number{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;border-radius:50%;background:#eaf2ff;color:#1769d1;font-weight:bold;margin-left:8px}
+.empty-student{padding:25px;text-align:center;color:#667085}
+.att-card{background:#fff;border:1px solid #dfe5df;border-radius:22px;padding:14px 14px 16px;margin:12px 0;box-shadow:0 3px 12px #00000008}
+.att-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.att-name{font-size:20px;font-weight:900}
+.att-num{font-size:13px;color:#667085;margin-left:5px}
+.saved-badge{font-size:11px;padding:5px 10px;border-radius:999px;background:#dff5f0;color:#245c56}
+.att-status-grid,.att-hw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.att-hw-grid{margin-top:8px}
+.att-btn{border:1px solid #d8e0da;background:#fff;color:#5b6670;border-radius:18px;padding:11px 5px;font:inherit;font-size:14px;cursor:pointer}
+.att-btn.active{background:#3c8f87;color:#fff;border-color:#3c8f87}
+.att-hw-btn{border:1px solid #d8e0da;background:#fff;color:#5b6670;border-radius:18px;padding:10px 5px;font:inherit;font-size:13px;cursor:pointer}
+.att-hw-btn.active{background:#f5dfad;color:#5d4a22;border-color:#f5dfad}
+.att-note{margin-top:9px!important;border-radius:18px!important;padding:11px 14px!important}
+@media(max-width:520px){.att-status-grid,.att-hw-grid{gap:6px}.att-btn,.att-hw-btn{font-size:12px;padding:10px 3px}.att-name{font-size:16px}}
+small{color:#667085}.danger{color:#b42318}.empty{text-align:center;padding:30px;color:#667085}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand-row"><div><h1>📚 دفتر کلاسی</h1><p>دفتر دیجیتال معلم • پایه چهارم</p></div><div class="desk-icon">✏️</div></div>
+  <div id="todayBanner" class="today-banner"></div>
+</header>
+<div id="authBox" class="card" style="margin:14px">
+<h3>ورود معلم 🔐</h3><p class="muted">برای دیدن و ثبت اطلاعات کلاس وارد حساب معلم شوید.</p>
+<input id="loginEmail" type="email" placeholder="ایمیل حساب معلم">
+<input id="loginPassword" type="password" placeholder="رمز عبور" style="margin-top:8px">
+<div class="actions"><button class="primary" onclick="login()">ورود</button></div>
+<div id="authMsg" class="muted"></div></div>
+<nav id="nav" style="display:none">
+<button class="active" data-tab="home">خانه</button><button data-tab="students">دانش‌آموزان</button>
+<button data-tab="attendance">حضور و تکلیف</button><button data-tab="schedule">برنامه کلاسی</button><button data-tab="progress">پیشرفت تدریس</button><button data-tab="quran">📖 قرآن</button>
+<button onclick="logout()">خروج</button>
+</nav>
+<main>
+<section id="home" class="show">
+<div class="card"><h2>خوش آمدید 👋</h2><p class="muted">دفتر کلاسی ابری • اطلاعات در Supabase ذخیره می‌شود.</p>
+<div class="grid"><div class="card"><b>۱۶</b><br><small>دانش‌آموز</small></div><div class="card"><b>۵</b><br><small>درس</small></div><div class="card"><b>۱۵</b><br><small>زنگ هفتگی</small></div></div></div>
+</section>
+<section id="students"><div class="card">
+<h2>👩‍🏫 مدیریت دانش‌آموزان</h2>
+<p class="muted">نام‌ها را می‌توانی اضافه، ویرایش یا حذف کنی. تغییر نام، سابقه همان دانش‌آموز را حفظ می‌کند.</p>
+<div class="student-toolbar">
+<input id="studentSearch" placeholder="جستجوی نام...">
+<button class="add-student" onclick="addStudent()">＋ دانش‌آموز جدید</button>
+</div>
+<div id="studentList"></div>
+</div></section>
+<section id="attendance"><div class="card"><h2>حضور و غیاب و تکلیف</h2><p class="muted">وضعیت هر دانش‌آموز را انتخاب کنید و در پایان «ذخیره همه» را بزنید.</p>
+<div class="row"><div><label>تاریخ شمسی</label><input id="aDate"></div><div><label>یادداشت کلی کلاس</label><input id="aGeneral" placeholder="اختیاری"></div></div>
+<div class="actions"><button class="secondary" onclick="loadAttendance()">بارگذاری روز</button><button class="primary" onclick="saveAttendance()">ذخیره همه</button></div>
+<div id="attendanceList"></div></div></section>
+<section id="schedule"><div class="card"><h2>برنامه کلاسی</h2><p class="muted">پنجشنبه و جمعه در برنامه وجود ندارند. درس هر زنگ را خودت انتخاب کن.</p><div class="table"><div id="scheduleGrid" class="schedule"></div></div><div class="actions"><button class="primary" onclick="saveSchedule()">ذخیره برنامه</button><button class="secondary" onclick="resetSchedule()">بازنشانی</button></div></div></section>
+<section id="progress"><div class="card"><h2>ثبت پیشرفت تدریس</h2><div class="row"><div><label>تاریخ شمسی</label><input id="pDate" placeholder="مثلاً ۱۴۰۵/۰۷/۰۶"></div><div><label>درس</label><select id="pSubject"></select></div></div>
+<div style="margin-top:10px"><label>تا کدام صفحه / درس / مبحث پیش رفت؟</label><input id="pPage"></div>
+<div style="margin-top:10px"><label>موضوع تدریس‌شده</label><input id="pTopic"></div>
+<div style="margin-top:10px"><label>فعالیت‌های انجام‌شده در کلاس</label><textarea id="pActivity"></textarea></div>
+<div style="margin-top:10px"><label>تکلیف داده‌شده</label><textarea id="pHomework"></textarea></div>
+<div style="margin-top:10px"><label>یادداشت معلم</label><textarea id="pNote"></textarea></div>
+<div class="actions"><button class="primary" onclick="addProgress()">ثبت پیشرفت</button></div></div>
+<div class="card"><h2>سوابق پیشرفت</h2><div class="row"><input id="filterText" placeholder="جستجو..."><select id="filterSubject"></select></div><div id="progressList"></div></div></section>
+
+<section id="quran">
+  <div class="card">
+    <h2>📖 قرآن کریم</h2>
+    <p class="muted">سوره موردنظر را انتخاب کن و متن آیات را ببین.</p>
+    <div class="row">
+      <div>
+        <label>انتخاب سوره</label>
+        <select id="quranSurah"></select>
+      </div>
+      <div>
+        <label>شماره آیه (اختیاری)</label>
+        <input id="quranAyah" type="number" min="1" placeholder="مثلاً 1">
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="loadQuran()">نمایش قرآن</button>
+      <button class="secondary" onclick="clearQuran()">پاک کردن</button>
+    </div>
+  </div>
+  <div id="quranResult"></div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://smswcydkmlyggjjjeujd.supabase.co';
+const SUPABASE_KEY='sb_publishable_Q8jGoeOnJG-JB1lJC6_O5A_PtlPGKT0';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+let currentUser=null;
+let dbStudents=[];
+const subjects=['ریاضی','فارسی','علوم','مطالعات اجتماعی','هدیه‌های آسمانی'];
+const students=['سهما دریایی صلعی','فریجا زارع','کوثر سهیلی‌زاده','مریم گندمی','منا ملاحي','سما نجانی‌زاده','مونا یوسفی','نسیم آتش‌روز','هدا آسوده','نهال ارزنگ','مریم برخاسته','رهاب جاسمی','سدنیا جاشوئی','عذرا جاشوئی خمیری','مطهره خوش‌دل','فاطمه دربخش'];
+const days=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه'];
+let schedule=JSON.parse(localStorage.getItem('classSchedule')||'null')||Object.fromEntries(days.map(d=>[d,['','','']]));
+let progress=JSON.parse(localStorage.getItem('classProgress')||'[]');
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('section').forEach(s=>s.classList.remove('show'));document.getElementById(b.dataset.tab).classList.add('show')});
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+
+function setTodayBanner(){
+  const el=document.getElementById('todayBanner');
+  if(!el)return;
+  const d=new Date();
+  const weekday=new Intl.DateTimeFormat('fa-IR',{weekday:'long'}).format(d);
+  const parts=new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'long',day:'numeric'}).formatToParts(d);
+  const day=parts.find(x=>x.type==='day')?.value||'';
+  const month=parts.find(x=>x.type==='month')?.value||'';
+  const year=parts.find(x=>x.type==='year')?.value||'';
+  el.textContent=`${weekday}، ${day} ${month} ${year}`;
+}
+function renderStudents(q=''){
+  let a=(dbStudents.length?dbStudents:students.map((name,i)=>({id:'local-'+i,name,grade:'چهارم'}))).filter(x=>(x.name||'').includes(q));
+  document.getElementById('studentList').innerHTML=a.map((x,i)=>`
+    <div class="student-manage-card">
+      <div class="student-manage-row">
+        <div><span class="student-number">${i+1}</span><b>${esc(x.name)}</b><br><small class="muted" style="margin-right:38px">پایه ${esc(x.grade||'چهارم')}</small></div>
+        ${x.id && !String(x.id).startsWith('local-') ? `<div class="student-actions">
+          <button class="icon-edit" onclick="editStudent('${esc(x.id)}')">✏️ ویرایش</button>
+          <button class="icon-delete" onclick="deleteStudent('${esc(x.id)}')">🗑️ حذف</button>
+        </div>` : ''}
+      </div>
+    </div>`).join('')||'<div class="empty-student">دانش‌آموزی پیدا نشد.</div>';
+}
+document.getElementById('studentSearch').oninput=e=>renderStudents(e.target.value);
+async function addStudent(){
+  if(!currentUser){alert('ابتدا وارد شوید.');return}
+  const name=prompt('نام و نام خانوادگی دانش‌آموز را وارد کنید:');
+  if(!name || !name.trim()) return;
+  const clean=name.trim();
+  if(dbStudents.some(x=>x.name===clean)){alert('این دانش‌آموز قبلاً ثبت شده است.');return}
+  const {data,error}=await sb.from('students').insert({teacher_id:currentUser.id,name:clean,grade:'چهارم'}).select('id,name,grade').single();
+  if(error){alert('خطا در افزودن دانش‌آموز: '+error.message);return}
+  dbStudents.push(data); dbStudents.sort((a,b)=>a.name.localeCompare(b.name,'fa'));
+  renderStudents(document.getElementById('studentSearch').value.trim());
+  renderAttendance();
+  alert('دانش‌آموز با موفقیت اضافه شد ✅');
+}
+async function editStudent(id){
+  if(!currentUser)return;
+  const st=dbStudents.find(x=>x.id===id); if(!st)return;
+  const name=prompt('نام جدید دانش‌آموز:',st.name);
+  if(!name || !name.trim() || name.trim()===st.name)return;
+  const clean=name.trim();
+  if(dbStudents.some(x=>x.id!==id && x.name===clean)){alert('این نام قبلاً وجود دارد.');return}
+  const {data,error}=await sb.from('students').update({name:clean}).eq('id',id).eq('teacher_id',currentUser.id).select('id,name,grade').single();
+  if(error){alert('خطا در ویرایش نام: '+error.message);return}
+  const i=dbStudents.findIndex(x=>x.id===id); if(i>=0)dbStudents[i]=data;
+  renderStudents(document.getElementById('studentSearch').value.trim());
+  renderAttendance();
+  alert('نام دانش‌آموز ویرایش شد ✅');
+}
+async function deleteStudent(id){
+  if(!currentUser)return;
+  const st=dbStudents.find(x=>x.id===id); if(!st)return;
+  if(!confirm(`دانش‌آموز «${st.name}» حذف شود؟\nسابقه حضورغیاب او نیز ممکن است به‌دلیل رابطه دیتابیس حذف شود.`))return;
+  const {error}=await sb.from('students').delete().eq('id',id).eq('teacher_id',currentUser.id);
+  if(error){alert('خطا در حذف دانش‌آموز: '+error.message);return}
+  dbStudents=dbStudents.filter(x=>x.id!==id);
+  renderStudents(document.getElementById('studentSearch').value.trim());
+  renderAttendance();
+  alert('دانش‌آموز حذف شد.');
+}
+
+
+const quranSurahs=[
+[1,'الفاتحة',7],[2,'البقرة',286],[3,'آل عمران',200],[4,'النساء',176],[5,'المائدة',120],
+[6,'الأنعام',165],[7,'الأعراف',206],[8,'الأنفال',75],[9,'التوبة',129],[10,'یونس',109],
+[11,'هود',123],[12,'یوسف',111],[13,'الرعد',43],[14,'ابراهیم',52],[15,'الحجر',99],
+[16,'النحل',128],[17,'الإسراء',111],[18,'الکهف',110],[19,'مریم',98],[20,'طه',135],
+[21,'الأنبیاء',112],[22,'الحج',78],[23,'المؤمنون',118],[24,'النور',64],[25,'الفرقان',77],
+[26,'الشعراء',227],[27,'النمل',93],[28,'القصص',88],[29,'العنکبوت',69],[30,'الروم',60],
+[31,'لقمان',34],[32,'السجدة',30],[33,'الأحزاب',73],[34,'سبأ',54],[35,'فاطر',45],
+[36,'یس',83],[37,'الصافات',182],[38,'ص',88],[39,'الزمر',75],[40,'غافر',85],
+[41,'فصلت',54],[42,'الشوری',53],[43,'الزخرف',89],[44,'الدخان',59],[45,'الجاثیة',37],
+[46,'الأحقاف',35],[47,'محمد',38],[48,'الفتح',29],[49,'الحجرات',18],[50,'ق',45],
+[51,'الذاریات',60],[52,'الطور',49],[53,'النجم',62],[54,'القمر',55],[55,'الرحمن',78],
+[56,'الواقعة',96],[57,'الحدید',29],[58,'المجادلة',22],[59,'الحشر',24],[60,'الممتحنة',13],
+[61,'الصف',14],[62,'الجمعة',11],[63,'المنافقون',11],[64,'التغابن',18],[65,'الطلاق',12],
+[66,'التحریم',12],[67,'الملک',30],[68,'القلم',52],[69,'الحاقة',52],[70,'المعارج',44],
+[71,'نوح',28],[72,'الجن',28],[73,'المزمل',20],[74,'المدثر',56],[75,'القیامة',40],
+[76,'الإنسان',31],[77,'المرسلات',50],[78,'النبأ',40],[79,'النازعات',46],[80,'عبس',42],
+[81,'التکویر',29],[82,'الانفطار',19],[83,'المطففین',36],[84,'الانشقاق',25],[85,'البروج',22],
+[86,'الطارق',17],[87,'الأعلى',19],[88,'الغاشیة',26],[89,'الفجر',30],[90,'البلد',20],
+[91,'الشمس',15],[92,'اللیل',21],[93,'الضحی',11],[94,'الشرح',8],[95,'التین',8],
+[96,'العلق',19],[97,'القدر',5],[98,'البینة',8],[99,'الزلزلة',8],[100,'العادیات',11],
+[101,'القارعة',11],[102,'التکاثر',8],[103,'العصر',3],[104,'الهمزة',9],[105,'الفیل',5],
+[106,'قریش',4],[107,'الماعون',7],[108,'الکوثر',3],[109,'الکافرون',6],[110,'النصر',3],
+[111,'المسد',5],[112,'الإخلاص',4],[113,'الفلق',5],[114,'الناس',6]
+];
+function fillQuran(){
+  const el=document.getElementById('quranSurah');
+  if(!el)return;
+  el.innerHTML=quranSurahs.map(s=>`<option value="${s[0]}">${s[0]} — ${s[1]} (${s[2]} آیه)</option>`).join('');
+}
+async function loadQuran(){
+  const surah=document.getElementById('quranSurah').value;
+  const ayah=document.getElementById('quranAyah').value.trim();
+  const result=document.getElementById('quranResult');
+  result.innerHTML='<div class="quran-loading">در حال دریافت آیات…</div>';
+  try{
+    const url=ayah?`https://api.alquran.cloud/v1/ayah/${surah}:${ayah}/quran-uthmani`:`https://api.alquran.cloud/v1/surah/${surah}/quran-uthmani`;
+    const res=await fetch(url);
+    const json=await res.json();
+    if(!json.data)throw new Error('آیات دریافت نشد.');
+    if(ayah){
+      const a=json.data;
+      result.innerHTML=`<div class="quran-ayah"><div class="quran-head"><b>${a.surah.name}</b><span class="quran-number">${a.numberInSurah}</span></div><div class="quran-arabic">${esc(a.text)}</div></div>`;
+    }else{
+      const sur=json.data;
+      result.innerHTML=`<div class="card"><h2>سوره ${esc(sur.name)}</h2>${sur.ayahs.map(a=>`<div class="quran-ayah"><div class="quran-head"><span class="quran-number">${a.numberInSurah}</span></div><div class="quran-arabic">${esc(a.text)}</div></div>`).join('')}</div>`;
+    }
+  }catch(e){
+    result.innerHTML=`<div class="quran-error">دریافت قرآن انجام نشد. اینترنت را بررسی کن و دوباره امتحان کن.</div>`;
+  }
+}
+function clearQuran(){document.getElementById('quranResult').innerHTML='';document.getElementById('quranAyah').value='';}
+function renderSchedule(){let g=document.getElementById('scheduleGrid');g.innerHTML='<div class="cell head">روز</div><div class="cell head">زنگ ۱</div><div class="cell head">زنگ ۲</div><div class="cell head">زنگ ۳</div>';days.forEach(d=>{g.innerHTML+=`<div class="cell day">${d}</div>`+schedule[d].map((v,i)=>`<div class="cell"><select data-day="${d}" data-i="${i}"><option value="">انتخاب درس</option>${subjects.map(s=>`<option ${s===v?'selected':''}>${s}</option>`).join('')}</select></div>`).join('')})}
+async function saveSchedule(){document.querySelectorAll('#scheduleGrid select').forEach(s=>schedule[s.dataset.day][s.dataset.i]=s.value);localStorage.setItem('classSchedule',JSON.stringify(schedule));if(!currentUser){alert('ابتدا وارد شوید.');return}let rows=[];days.forEach(d=>schedule[d].forEach((subject,i)=>rows.push({teacher_id:currentUser.id,day:d,period:i+1,subject:subject||null})));const {error}=await sb.from('class_schedule').upsert(rows,{onConflict:'teacher_id,day,period'});if(error){alert('خطا در ذخیره برنامه: '+error.message);return}alert('برنامه در فضای ابری ذخیره شد ✅')}
+async function resetSchedule(){schedule=Object.fromEntries(days.map(d=>[d,['','','']]));renderSchedule();await saveSchedule()}
+function fillSubjects(){document.getElementById('pSubject').innerHTML=subjects.map(s=>`<option>${s}</option>`).join('');document.getElementById('filterSubject').innerHTML='<option value="">همه درس‌ها</option>'+subjects.map(s=>`<option>${s}</option>`).join('')}
+async function addProgress(){if(!currentUser){alert('ابتدا وارد شوید.');return}let x={teacher_id:currentUser.id,date_shamsi:pDate.value.trim(),subject:pSubject.value,page_lesson:pPage.value.trim(),topic:pTopic.value.trim(),class_activities:pActivity.value.trim(),homework:pHomework.value.trim(),teacher_note:pNote.value.trim()};if(!x.date_shamsi||!x.topic){alert('تاریخ و موضوع تدریس را وارد کن.');return}const {error}=await sb.from('teaching_progress').insert(x);if(error){alert('خطا در ثبت پیشرفت: '+error.message);return}['pPage','pTopic','pActivity','pHomework','pNote'].forEach(id=>document.getElementById(id).value='');await loadProgress();alert('پیشرفت ثبت شد ✅')}
+async function loadProgress(){if(!currentUser)return;const {data,error}=await sb.from('teaching_progress').select('*').order('created_at',{ascending:false});if(error){console.warn(error);return}progress=data||[];renderProgress()}
+function renderProgress(){let q=document.getElementById('filterText').value.trim(),f=document.getElementById('filterSubject').value;let a=progress.filter(x=>(!f||x.subject===f)&&(!q||Object.values(x).join(' ').includes(q)));document.getElementById('progressList').innerHTML=a.length?a.map(x=>`<div class="progress-item"><b>${esc(x.subject)}</b> • ${esc(x.date_shamsi)}<br><small>پیشرفت: ${esc(x.page_lesson||'—')}</small><p>${esc(x.topic)}</p>${x.class_activities?`<small>فعالیت: ${esc(x.class_activities)}</small><br>`:''}${x.homework?`<small>تکلیف: ${esc(x.homework)}</small><br>`:''}${x.teacher_note?`<small>یادداشت: ${esc(x.teacher_note)}</small>`:''}<div class="actions"><button class="secondary" onclick="delProgress('${x.id}')">حذف</button></div></div>`).join(''):'<div class="empty">هنوز سابقه‌ای ثبت نشده.</div>'}
+async function delProgress(id){if(!currentUser)return;const {error}=await sb.from('teaching_progress').delete().eq('id',id);if(error){alert(error.message);return}await loadProgress()}
+document.getElementById('filterText').oninput=renderProgress;document.getElementById('filterSubject').onchange=renderProgress;
+function todayShamsi(){return new Intl.DateTimeFormat('fa-IR-u-ca-persian',{year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()).replaceAll('٫','/').replaceAll('-','/')}
+function statusOptions(v){return ['حاضر','غایب','تأخیر','موجه'].map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}
+function hwOptions(v){return ['انجام شده','انجام نشده','ناقص','ندارد'].map(x=>`<option ${x===v?'selected':''}>${x}</option>`).join('')}
+function renderAttendance(rows=[]){
+  let map=new Map(rows.map(x=>[x.student_id,x]));
+  let a=dbStudents.length?dbStudents:students.map((name,i)=>({id:String(i),name}));
+  const statuses=['حاضر','غایب','تأخیر','موجه'];
+  const hws=['انجام شده','ناقص','انجام نشده','ندارد'];
+  document.getElementById('attendanceList').innerHTML=a.map((st,i)=>{
+    let x=map.get(st.id)||{};
+    let status=x.status||'حاضر', hw=x.homework_status||'انجام شده';
+    return `<div class="att-card" data-student="${esc(st.id)}">
+      <div class="att-top"><div class="att-name"><span class="att-num">${i+1}</span>${esc(st.name)}</div>${x.id?'<span class="saved-badge">ثبت شده</span>':''}</div>
+      <div class="att-status-grid">
+        ${statuses.map(v=>`<button type="button" class="att-btn ${v===status?'active':''}" data-value="${v}" onclick="pickStatus(this)">${v}</button>`).join('')}
+      </div>
+      <div class="att-hw-grid">
+        ${hws.map(v=>`<button type="button" class="att-hw-btn ${v===hw?'active':''}" data-value="${v}" onclick="pickHomework(this)">${v}</button>`).join('')}
+      </div>
+      <input class="aNote att-note" value="${esc(x.note||'')}" placeholder="یادداشت آزاد...">
+    </div>`;
+  }).join('')||'<div class="empty">دانش‌آموزی پیدا نشد.</div>';
+}
+function pickStatus(btn){
+  btn.parentElement.querySelectorAll('.att-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function pickHomework(btn){
+  btn.parentElement.querySelectorAll('.att-hw-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+async function loadAttendance(){if(!currentUser){alert('ابتدا وارد شوید.');return}const date=document.getElementById('aDate').value.trim();const {data,error}=await sb.from('attendance').select('*').eq('teacher_id',currentUser.id).eq('date_shamsi',date);if(error){alert('خطا در بارگذاری: '+error.message);return}renderAttendance(data||[])}
+async function saveAttendance(){if(!currentUser){alert('ابتدا وارد شوید.');return}const date=document.getElementById('aDate').value.trim();if(!date){alert('تاریخ را وارد کن.');return}if(!dbStudents.length){alert('لیست دانش‌آموزان از Supabase دریافت نشده است؛ ابتدا اتصال Supabase را بررسی کنید.');return}
+const rows=[...document.querySelectorAll('#attendanceList .att-card')].map(el=>({teacher_id:currentUser.id,student_id:el.dataset.student,date_shamsi:date,status:el.querySelector('.att-btn.active')?.dataset.value||'حاضر',homework_status:el.querySelector('.att-hw-btn.active')?.dataset.value||'انجام شده',note:el.querySelector('.aNote').value.trim()}));const {error}=await sb.from('attendance').upsert(rows,{onConflict:'teacher_id,student_id,date_shamsi'});if(error){alert('خطا در ذخیره حضور و تکلیف: '+error.message);return}alert('حضور و تکلیف با موفقیت ذخیره شد ✅')}
+async function loadStudents(){
+  const {data,error}=await sb.from('students').select('id,name,grade').order('name');
+  if(error){
+    console.error('students query error:',error);
+    dbStudents=[];
+    renderStudents();
+    renderAttendance();
+    document.getElementById('attendanceList').insertAdjacentHTML('afterbegin',`<div class="card" style="border-color:#f2c6c6;color:#9b2c2c">خطا در دریافت دانش‌آموزان از Supabase: ${esc(error.message)}</div>`);
+    return;
+  }
+  dbStudents=Array.isArray(data)?data:[];
+  renderStudents();
+  renderAttendance();
+}
+async function loadScheduleCloud(){const {data,error}=await sb.from('class_schedule').select('day,period,subject');if(error)return;data.forEach(x=>{if(days.includes(x.day)&&x.period>=1&&x.period<=3)schedule[x.day][x.period-1]=x.subject||''});renderSchedule()}
+async function login(){const email=document.getElementById('loginEmail').value.trim(),password=document.getElementById('loginPassword').value;document.getElementById('authMsg').textContent='در حال ورود...';const {data,error}=await sb.auth.signInWithPassword({email,password});if(error){document.getElementById('authMsg').textContent='ورود ناموفق: '+error.message;return}currentUser=data.user;document.getElementById('authBox').style.display='none';document.getElementById('nav').style.display='flex';document.getElementById('authMsg').textContent='';await loadStudents();await loadScheduleCloud();await loadProgress();document.getElementById('aDate').value=todayShamsi();await loadAttendance()}
+async function logout(){await sb.auth.signOut();currentUser=null;document.getElementById('authBox').style.display='block';document.getElementById('nav').style.display='none'}
+async function bootAuth(){const {data}=await sb.auth.getSession();if(data.session){currentUser=data.session.user;document.getElementById('authBox').style.display='none';document.getElementById('nav').style.display='flex';await loadStudents();await loadScheduleCloud();await loadProgress();document.getElementById('aDate').value=todayShamsi();await loadAttendance()}}
+
+setTodayBanner();renderStudents();renderSchedule();fillSubjects();fillQuran();renderProgress();document.getElementById('aDate').value=todayShamsi();bootAuth();
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn))}
+</script></body></html>
